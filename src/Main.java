@@ -25,6 +25,9 @@ public final class Main {
         }
         config.printDebug(System.out);
         Shell shell = new Shell(config, System.out);
+        if (config.vfsPath() != null) {
+            shell.loadVfs(config.vfsPath());
+        }
         if (config.scriptPath() != null) {
             ScriptRunner.run(shell, config.scriptPath());
         }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Несколько уровней файлов и каталогов (больше трёх) -->
+<vfs name="deep">
+    <dir name="home">
+        <dir name="yura" owner="yura">
+            <file name="hello.txt" owner="yura">Hello, world!</file>
+            <dir name="projects" owner="yura">
+                <dir name="config1" owner="yura">
+                    <file name="Main.java" owner="yura">
+                        public class Main {
+                        }
+                    </file>
+                </dir>
+                <file name="todo.txt" owner="yura">
+                    сдать этап 3
+                    сдать этап 4
+                </file>
+            </dir>
+        </dir>
+    </dir>
+    <dir name="etc">
+        <file name="hostname">vfs-host</file>
+    </dir>
+    <dir name="tmp"/>
+</vfs>

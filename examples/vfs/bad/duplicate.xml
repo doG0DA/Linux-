@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ошибка: два файла с одним именем -->
+<vfs name="duplicate">
+    <file name="a.txt">1</file>
+    <file name="a.txt">2</file>
+</vfs>

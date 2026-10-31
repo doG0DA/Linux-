@@ -1,4 +1,5 @@
 import java.io.PrintStream;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ public class Shell {
     private final Map<String, Command> commands = new LinkedHashMap<>();
     private boolean running = true;
     private int exitCode;
+    private Vfs vfs;
+    private VfsDirectory cwd;
 
     /**
      * Создаёт оболочку.
@@ -29,6 +32,7 @@ public class Shell {
         register(new CdCommand());
         register(new ExitCommand());
         register(new ConfDumpCommand());
+        register(new VfsInfoCommand());
     }
 
     private void register(Command command) {
@@ -68,12 +72,65 @@ public class Shell {
     }
 
     /**
-     * Возвращает текущее приглашение к вводу.
+     * Загружает VFS и делает её корень текущим каталогом.
+     * Об ошибке загрузки сообщается в поток вывода.
+     *
+     * @param path путь к XML-файлу VFS
+     * @return {@code true}, если VFS загружена
+     */
+    public boolean loadVfs(Path path) {
+        try {
+            vfs = VfsLoader.load(path);
+            cwd = vfs.root();
+            out.println("VFS загружена: " + vfs.name());
+            return true;
+        } catch (VfsException e) {
+            out.println("Ошибка загрузки VFS: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Возвращает загруженную VFS.
+     *
+     * @return VFS
+     * @throws CommandException если VFS не загружена
+     */
+    public Vfs requireVfs() throws CommandException {
+        if (vfs == null) {
+            throw new CommandException("VFS не загружена (используйте параметр --vfs)");
+        }
+        return vfs;
+    }
+
+    /**
+     * Текущий каталог VFS.
+     *
+     * @return каталог
+     * @throws CommandException если VFS не загружена
+     */
+    public VfsDirectory cwd() throws CommandException {
+        requireVfs();
+        return cwd;
+    }
+
+    /**
+     * Меняет текущий каталог VFS.
+     *
+     * @param dir новый текущий каталог
+     */
+    public void setCwd(VfsDirectory dir) {
+        cwd = dir;
+    }
+
+    /**
+     * Возвращает текущее приглашение к вводу. Если VFS загружена,
+     * в нём показывается текущий каталог VFS, иначе папка ОС.
      *
      * @return строка приглашения
      */
     public String promptText() {
-        return prompt.build(prompt.getRealDir());
+        return prompt.build(vfs == null ? prompt.getRealDir() : cwd.path());
     }
 
     /**

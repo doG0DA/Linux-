@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ошибка: неизвестный элемент -->
+<vfs name="unknown">
+    <link name="a" target="b"/>
+</vfs>
