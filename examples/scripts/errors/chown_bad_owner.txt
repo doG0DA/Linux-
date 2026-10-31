@@ -1,0 +1,2 @@
+# Ошибка: chown Alice! /tmp
+chown Alice! /tmp

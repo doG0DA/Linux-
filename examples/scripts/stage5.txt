@@ -1,0 +1,23 @@
+# Стартовый скрипт этапа 5. Запускать с --vfs examples/vfs/deep.xml
+# Все изменения выполняются только в памяти, XML-файл не меняется
+vfs-info
+# touch: новый файл, несколько файлов, относительный путь, существующий файл
+ls -l /tmp
+touch /tmp/new.txt
+touch /tmp/a.txt /tmp/b.txt
+cd /home/yura
+touch notes.txt
+touch hello.txt
+ls -l
+ls -l /tmp
+# chown: один путь, несколько путей, рекурсивно
+chown alice /tmp/new.txt
+chown bob /tmp/a.txt /tmp/b.txt
+ls -l /tmp
+chown -R guest /home/yura/projects
+ls -l /home/yura/projects /home/yura/projects/config1
+# хеш не изменился: исходный файл VFS не модифицируется
+vfs-info
+# Ошибка: такого каталога нет, на этом скрипт остановится
+touch /nope/file.txt
+echo "эта строка не выполнится"

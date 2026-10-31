@@ -36,6 +36,8 @@ public class Shell {
         register(new RevCommand());
         register(new ClearCommand());
         register(new EchoCommand());
+        register(new TouchCommand());
+        register(new ChownCommand());
     }
 
     private void register(Command command) {
@@ -145,6 +147,15 @@ public class Shell {
      */
     public String promptText() {
         return prompt.build(vfs == null ? prompt.getRealDir() : cwd.path());
+    }
+
+    /**
+     * Имя текущего пользователя ОС; становится владельцем новых файлов.
+     *
+     * @return имя пользователя
+     */
+    public String userName() {
+        return prompt.getUserName();
     }
 
     /**

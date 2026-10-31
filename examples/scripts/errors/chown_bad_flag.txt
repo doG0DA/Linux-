@@ -1,0 +1,2 @@
+# Ошибка: chown -x alice /tmp
+chown -x alice /tmp

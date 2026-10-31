@@ -1,14 +1,18 @@
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Команда {@code ls [-l] [путь...]}: выводит содержимое каталогов VFS.
  * Без пути выводится текущий каталог. Ключ {@code -l} включает подробный
- * формат: тип, владелец, размер и имя.
+ * формат: тип, владелец, размер, время изменения и имя.
  */
 public class LsCommand implements Command {
 
     private static final String LONG_FLAG = "-l";
+    private static final DateTimeFormatter DATE =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault());
 
     @Override
     public String name() {
@@ -67,10 +71,10 @@ public class LsCommand implements Command {
      * Строка подробного формата для одного узла.
      *
      * @param node узел
-     * @return строка вида {@code d yura 0 projects}
+     * @return строка вида {@code d yura 0 2026-10-23 12:00 projects}
      */
     protected String longLine(VfsNode node) {
-        return String.format("%s %-8s %8d %s", node.isDirectory() ? "d" : "-", node.owner(), node.size(),
-                node.name());
+        return String.format("%s %-8s %8d %s %s", node.isDirectory() ? "d" : "-", node.owner(), node.size(),
+                DATE.format(node.modified()), node.name());
     }
 }

@@ -1,0 +1,2 @@
+# Ошибка: touch /etc/hostname/file.txt
+touch /etc/hostname/file.txt

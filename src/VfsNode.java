@@ -1,3 +1,5 @@
+import java.time.Instant;
+
 /**
  * Узел виртуальной файловой системы: файл или каталог.
  */
@@ -6,6 +8,7 @@ public abstract class VfsNode {
     private final String name;
     private final VfsDirectory parent;
     private String owner;
+    private Instant modified = Instant.now();
 
     /**
      * Создаёт узел.
@@ -59,6 +62,22 @@ public abstract class VfsNode {
      */
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    /**
+     * Время последнего изменения.
+     *
+     * @return время изменения
+     */
+    public Instant modified() {
+        return modified;
+    }
+
+    /**
+     * Обновляет время последнего изменения на текущее.
+     */
+    public void touch() {
+        modified = Instant.now();
     }
 
     /**

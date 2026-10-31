@@ -1,0 +1,2 @@
+# Ошибка: touch /nope/file.txt
+touch /nope/file.txt
