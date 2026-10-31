@@ -60,4 +60,35 @@ public class Vfs {
     public VfsDirectory root() {
         return root;
     }
+
+    /**
+     * Находит узел по пути. Поддерживаются абсолютные и относительные пути,
+     * {@code .} и {@code ..}.
+     *
+     * @param cwd  текущий каталог, от которого считается относительный путь
+     * @param path путь
+     * @return найденный узел
+     * @throws CommandException если узел не найден или часть пути не каталог
+     */
+    public VfsNode resolve(VfsDirectory cwd, String path) throws CommandException {
+        VfsNode node = path.startsWith("/") ? root : cwd;
+        for (String part : path.split("/")) {
+            if (part.isEmpty() || part.equals(".")) {
+                continue;
+            }
+            if (part.equals("..")) {
+                node = node.parent() == null ? node : node.parent();
+                continue;
+            }
+            if (!node.isDirectory()) {
+                throw new CommandException(path + ": не каталог");
+            }
+            VfsNode child = ((VfsDirectory) node).child(part);
+            if (child == null) {
+                throw new CommandException(path + ": нет такого файла или каталога");
+            }
+            node = child;
+        }
+        return node;
+    }
 }

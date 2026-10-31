@@ -12,13 +12,8 @@ class BasicCommandsTest {
     private final ShellFixture fixture = new ShellFixture("--vfs", "v.xml");
 
     @Test
-    void lsStubPrintsNameAndArguments() {
-        assertEquals("ls [-l, /tmp]\n", fixture.run("ls -l /tmp"));
-    }
-
-    @Test
-    void cdStubPrintsNameAndArgument() {
-        assertEquals("cd [/tmp]\n", fixture.run("cd /tmp"));
+    void lsWithoutVfsIsError() {
+        assertTrue(fixture.run("ls").contains("VFS не загружена"));
     }
 
     @Test

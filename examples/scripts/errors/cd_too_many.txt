@@ -1,0 +1,2 @@
+# Ошибка: cd home etc
+cd home etc

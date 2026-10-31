@@ -35,7 +35,17 @@ run [--vfs <путь к VFS>] [--script <путь к стартовому скр
 
 ## Команды
 
-ls и cd пока заглушки и выводят своё имя и аргументы. cd принимает не больше одного аргумента.
+Команды, работающие с VFS, требуют загруженной VFS. Пути бывают абсолютные (/home/yura) и относительные (projects/config1), поддерживаются . и ..
+
+ls [-l] [путь...] выводит содержимое каталога (без пути текущего). Для файла выводится его имя. С -l выводится тип (d каталог, - файл), владелец, размер и имя. Если путей несколько, каждый выводится с заголовком.
+
+cd [путь] переходит в каталог, без аргумента в корень. Ошибка, если путь не найден, это файл или аргументов больше одного.
+
+rev файл... выводит строки файлов, перевернув каждую. Ошибка, если файл не указан, не найден или это каталог.
+
+echo [-n] [текст...] выводит аргументы через пробел, с -n без перевода строки в конце.
+
+clear очищает экран.
 
 exit [код] завершает работу с указанным кодом (по умолчанию 0). Код должен быть числом.
 
@@ -52,11 +62,11 @@ vfs-info выводит имя загруженной VFS и хеш SHA-256 да
 Тесты написаны на JUnit 5 и лежат в папке tests. test.bat при первом запуске скачивает JUnit в папку lib (она не хранится в репозитории), компилирует проект с тестами и запускает их. В IntelliJ IDEA тесты можно запускать кнопкой рядом с классом, подключив JUnit 5 через Alt+Enter на аннотации @Test.
 
 ```
-run.bat --vfs examples/vfs/deep.xml --script examples/scripts/stage3.txt
+run.bat --vfs examples/vfs/deep.xml --script examples/scripts/stage4.txt
 test.bat
 ```
 
-В папке scripts лежат скрипты ОС, которые запускают эмулятор с разными параметрами: stage2_no_params, stage2_params, stage2_bad_params, stage2_script_errors (параметры и стартовый скрипт), stage3_vfs_variants и stage3_vfs_errors (разные варианты VFS и ошибки загрузки). Стартовые скрипты эмулятора лежат в examples/scripts.
+В папке scripts лежат скрипты ОС, которые запускают эмулятор с разными параметрами: stage2_no_params, stage2_params, stage2_bad_params, stage2_script_errors (параметры и стартовый скрипт), stage3_vfs_variants и stage3_vfs_errors (разные варианты VFS и ошибки загрузки), stage4_commands (команды этапа 4 и их ошибки). Стартовые скрипты с одной ошибкой для каждой команды лежат в examples/scripts/errors. Стартовые скрипты эмулятора лежат в examples/scripts.
 
 ## Пример
 
@@ -69,6 +79,12 @@ yura@laptop:/$ vfs-info
 Имя VFS: deep
 Файл: examples/vfs/deep.xml
 SHA-256: 9ab25d1ec70a4e8dcd9c5a657f8e8093a4ea207a9bcc1b995efbcc715267deaf
-yura@laptop:/$ vfs-info лишний
-vfs-info: команда не принимает аргументов
+yura@laptop:/$ cd home/yura
+yura@laptop:/home/yura$ ls -l
+- yura           13 hello.txt
+d yura            0 projects
+yura@laptop:/home/yura$ rev hello.txt
+!dlrow ,olleH
+yura@laptop:/home/yura$ cd hello.txt
+cd: hello.txt: не каталог
 ```

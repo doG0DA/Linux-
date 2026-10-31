@@ -33,6 +33,9 @@ public class Shell {
         register(new ExitCommand());
         register(new ConfDumpCommand());
         register(new VfsInfoCommand());
+        register(new RevCommand());
+        register(new ClearCommand());
+        register(new EchoCommand());
     }
 
     private void register(Command command) {
@@ -112,6 +115,17 @@ public class Shell {
     public VfsDirectory cwd() throws CommandException {
         requireVfs();
         return cwd;
+    }
+
+    /**
+     * Находит узел VFS по пути относительно текущего каталога.
+     *
+     * @param path абсолютный или относительный путь
+     * @return узел
+     * @throws CommandException если VFS не загружена или путь не найден
+     */
+    public VfsNode resolve(String path) throws CommandException {
+        return requireVfs().resolve(cwd, path);
     }
 
     /**

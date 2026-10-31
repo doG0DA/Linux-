@@ -1,0 +1,26 @@
+# Стартовый скрипт этапа 4. Запускать с --vfs examples/vfs/deep.xml
+# ls: текущий каталог, подробный формат, несколько путей, файл
+ls
+ls -l
+ls home etc
+ls -l /home/yura/hello.txt
+# cd: относительный и абсолютный путь, .., без аргументов
+cd home/yura
+ls -l
+cd projects/config1
+cd ../..
+cd /etc
+cd
+# rev: один и несколько файлов
+rev /home/yura/hello.txt
+rev /home/yura/projects/todo.txt /etc/hostname
+# echo: обычный, с переменной, -n, пустой
+echo Привет, VFS!
+echo "HOME в ОС: $HOME"
+echo -n "без перевода строки"
+echo
+# clear очищает экран
+clear
+# Ошибка: такого каталога нет, на этом скрипт остановится
+cd /nope
+echo "эта строка не выполнится"

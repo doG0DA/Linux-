@@ -1,7 +1,8 @@
 import java.util.List;
 
 /**
- * Команда {@code cd}. Пока заглушка: выводит своё имя и аргументы.
+ * Команда {@code cd [путь]}: меняет текущий каталог VFS.
+ * Без аргумента переходит в корень.
  */
 public class CdCommand implements Command {
 
@@ -17,6 +18,10 @@ public class CdCommand implements Command {
         if (args.size() > MAX_ARGS) {
             throw new CommandException("слишком много аргументов");
         }
-        shell.out().println("cd " + args);
+        VfsNode target = shell.resolve(args.isEmpty() ? "/" : args.get(0));
+        if (!target.isDirectory()) {
+            throw new CommandException(args.get(0) + ": не каталог");
+        }
+        shell.setCwd((VfsDirectory) target);
     }
 }

@@ -1,0 +1,2 @@
+# Ошибка: rev /home
+rev /home
